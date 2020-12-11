@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="users" EntityType="Model1.user" />
+    <EntitySet Name="shows" EntityType="Model1.show" />
+    <EntitySet Name="bookeds" EntityType="Model1.booked" />
+    <AssociationSet Name="userbooked" Association="Model1.userbooked">
+      <End Role="user" EntitySet="users" />
+      <End Role="booked" EntitySet="bookeds" />
+    </AssociationSet>
+    <AssociationSet Name="showbooked" Association="Model1.showbooked">
+      <End Role="show" EntitySet="shows" />
+      <End Role="booked" EntitySet="bookeds" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="25" />
+    <Property Name="gender" Type="String" Nullable="false" MaxLength="10" />
+    <Property Name="phone" Type="String" Nullable="false" MaxLength="20" />
+    <Property Name="address" Type="String" Nullable="false" MaxLength="35" />
+    <NavigationProperty Name="bookeds" Relationship="Model1.userbooked" FromRole="user" ToRole="booked" />
+  </EntityType>
+  <EntityType Name="show">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="movie" Type="String" Nullable="false" />
+    <Property Name="time" Type="String" Nullable="false" />
+    <NavigationProperty Name="bookeds" Relationship="Model1.showbooked" FromRole="show" ToRole="booked" />
+  </EntityType>
+  <EntityType Name="booked">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="show_id" Type="String" Nullable="false" />
+    <Property Name="sit_no" Type="String" Nullable="false" />
+    <Property Name="user_id" Type="String" Nullable="false" />
+    <NavigationProperty Name="user" Relationship="Model1.userbooked" FromRole="booked" ToRole="user" />
+    <NavigationProperty Name="show" Relationship="Model1.showbooked" FromRole="booked" ToRole="show" />
+  </EntityType>
+  <Association Name="userbooked">
+    <End Type="Model1.user" Role="user" Multiplicity="1" />
+    <End Type="Model1.booked" Role="booked" Multiplicity="*" />
+  </Association>
+  <Association Name="showbooked">
+    <End Type="Model1.show" Role="show" Multiplicity="1" />
+    <End Type="Model1.booked" Role="booked" Multiplicity="*" />
+  </Association>
+</Schema>
